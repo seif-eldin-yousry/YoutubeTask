@@ -1,80 +1,76 @@
 //
-//  ViewController.swift
+//  PlaylistViewController.swift
 //  Task
 //
 //  Created by Seif Yousry on 3/26/20.
 //  Copyright © 2020 Seif Yousry. All rights reserved.
 //
 
+
 import UIKit
 
-class ViewController: UIViewController, UITabBarDelegate, UITableViewDataSource {
+class PlaylistViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+    //    @IBOutlet weak var myWebView: UIWebView!
     
-    var channel = [Video]()
+    
+    var videos:[Video] = []
     var video:Video = Video()
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        //        getVideo(videoCode: "M7lc1UVf-VE")
         
-        let video1 = Video()
-        video1.key = "M7lc1UVf-VE"
-        video1.title = "First"
-        channel.append(video1)
-        
-        let video2 = Video()
-        video2.key = "M7lc1UVf-VE"
-        video2.title = "Second"
-        channel.append(video2)
-        
-        let video3 = Video()
-        video3.key = "M7lc1UVf-VE"
-        video3.title = "Third"
-        channel.append(video3)
+        let video = Video()
+        video.key = "M7lc1UVf-VE"
+        video.title = "asdads"
+        videos.append(video)
         
     }
-
-
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return channel.count
+        return videos.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! ChannelTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! VideoTableViewCell
         
-        cell.channelTitle.text = channel[indexPath.row].title
-        let url = "https://img.youtube.com/vi/\(channel[indexPath.row].key)/0.jpg"
-        cell.channelImage.downloaded(from: url)
+        cell.videoTitle.text = videos[indexPath.row].title
+        let url = "https://img.youtube.com/vi/\(videos[indexPath.row].key)/0.jpg"
+        cell.videoImage.downloaded(from: url)
         
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        let vi = channel[indexPath.row]
-        self.channel = [vi]
+        let vi = videos[indexPath.row]
+        self.video = vi
         
-        performSegue(withIdentifier: "toPlaylist", sender: nil)
+        performSegue(withIdentifier: "toVideo", sender: nil)
         
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "toPlaylist" {
+        if segue.identifier == "toVideo" {
             
-            let vc = segue.destination as! PlaylistViewController
+            let vc = segue.destination as! VideoViewController
             vc.video = self.video
             
         }
     }
+    
 }
 
 
-
+//class Video {
+//    var key: String = ""
+//    var title: String = ""
+//}
 
 extension UIImageView {
-    func downloaded (from url: URL, contentMode mode: UIView.ContentMode = .scaleAspectFit) {
+    func downloadedVideo (from url: URL, contentMode mode: UIView.ContentMode = .scaleAspectFit) {
         contentMode = mode
         
         URLSession.shared.dataTask(with: url) { data, response, error in
@@ -93,10 +89,11 @@ extension UIImageView {
         
     }
     
-    func downloaded (from link: String, contentMode mode: UIView.ContentMode = .scaleAspectFit) {
+    func downloadedVideo (from link: String, contentMode mode: UIView.ContentMode = .scaleAspectFit) {
         guard let url = URL(string: link) else { return }
         downloaded(from: url, contentMode: mode)
         
     }
     
 }
+
